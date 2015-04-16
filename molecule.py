@@ -10,11 +10,11 @@ class Molecule:
     #название, etc информация, комментарий
     counts_line = []
     #состоит из строковых! значений counts_line sdf
-    atom_block_list = []
+    atom_block = []
     #float двумерная матрица, в 4 столбце string - обозначение атома 
-    bond_block_list = []
+    bond_block = []
     #float двумерная матрица
-    associated_data_dict = {}
+    fields_dict = {}
     #словарь списков, каждый список - строчка поля в sdf (бывают многострочные поля)
     
     def get_atom_count(self):
@@ -62,8 +62,8 @@ def extract_molecule_by_string(input_string):
     OutputMolecule.bond_block = bond_block
     
     associated_data_string_list = string_lines_list[5 + atom_count + bond_count : ]    
-    associated_data_dict = get_data_dict_from_string_list(associated_data_string_list)
+    fields_dict = get_data_dict_from_string_list(associated_data_string_list)
 
-    OutputMolecule.associated_data_dict = associated_data_dict
+    OutputMolecule.fields_dict = fields_dict
     
     return OutputMolecule

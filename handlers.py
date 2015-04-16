@@ -48,3 +48,29 @@ def get_data_dict_from_string_list(input_string_list):
     for field in output_dict:
         output_dict[field] = float_one_dim_list(output_dict[field])
     return output_dict
+
+def prepare_mol_list_for_working_panel(InputMoleculesList):
+    """Создает из поданного на вход экземпляра класса MoleculesList отредактированный MoleculesList,
+    пригодный для корректной работы виджета WorkingPanel
+
+    Подчищает fields_dict от многострочных полей, для однострочных полей оставляет их значения.
+    """
+    import copy
+    NewList = copy.deepcopy(InputMoleculesList)
+    NewList.mol_list = copy.deepcopy(InputMoleculesList.mol_list)
+    
+    for molecule in NewList.mol_list:
+        new_fields_dict = molecule.fields_dict
+        #подготовка нового словаря полей
+        keys_for_remove = []
+        for field in new_fields_dict:
+            value_list = new_fields_dict[field]
+            if len(value_list) != 1:
+                keys_for_remove.append(field)
+            else:
+                new_fields_dict[field] = new_fields_dict[field][0]
+        for key in keys_for_remove:
+            new_fields_dict.pop(key)
+        molecule.fields_dict = new_fields_dict 
+        NewList.name = InputMoleculesList.name + 'Prepared'
+    return NewList
