@@ -42,6 +42,7 @@ def extract_molecules_list_from_sdf(file, name = 'Source'):
             molecule_copy = extract_molecule_by_string(molecule_string)
             #получаем экземпляр класса Molecule
             OutputClass.append_molecule(molecule_copy)
+        prepare_source_list(OutputClass)
         return OutputClass
     else:
         return None
