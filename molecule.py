@@ -16,7 +16,11 @@ class Molecule:
     #float двумерная матрица
     fields_dict = {}
     #словарь списков, каждый список - строчка поля в sdf (бывают многострочные поля)
+    field_order_list = []
+    #упорядоченный список к отображению в working panel
     
+    #def __init__(self):
+        #self.fill_order_list()
     def get_atom_count(self):
         """Возвращает количество атомов в молекуле
         """
@@ -25,6 +29,13 @@ class Molecule:
         """Возвращает количество связей в молекуле
         """
         return int(self.counts_line[1])
+    def create_default_field_order_list(self):
+        """Заполняет список полей к отображению по умолчанию
+        """ 
+        for field in self.fields_dict.keys():
+            self.field_order_list.append((field, self.fields_dict[field]))
+        self.field_order_list.sort()
+    
 
 def extract_molecule_by_string(input_string):
     """Преобразует кусок sdf в класс Molecule
