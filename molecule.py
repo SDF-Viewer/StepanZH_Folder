@@ -25,13 +25,16 @@ class Molecule:
         """Возвращает количество атомов в молекуле
         """
         return int(self.counts_line[0])
+
     def get_bond_count(self):
         """Возвращает количество связей в молекуле
         """
         return int(self.counts_line[1])
-    def create_default_field_order_list(self):
+
+    def fill_default_field_order_list(self):
         """Заполняет список полей к отображению по умолчанию
-        """ 
+        """
+        self.field_order_list.clear()
         for field in self.fields_dict.keys():
             self.field_order_list.append((field, self.fields_dict[field]))
         self.field_order_list.sort()

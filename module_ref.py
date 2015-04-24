@@ -106,12 +106,11 @@ def draw_bond(num_atom1, num_atom2, type_bond):
 
     print("Number of components:",numOfComp)
 '''
-def draw_mol(mol, canv, scale=70, center=250):
+def draw_mol(mol, canv, scale=70, center=400):
     global mol_gl, canv_gl, dict_of_aroma_bonds
     import copy
     mol_gl = copy.deepcopy(mol)
     canv_gl = canv
-    canv_gl.delete("all")
 
     into_center(scale, center)
     for num_bond in range(len(mol_gl.bond_block)):

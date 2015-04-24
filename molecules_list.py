@@ -2,33 +2,36 @@ from molecule import *
 
 
 class MoleculesList:
-    """Список молекул
+    """ Список молекул
     """
 
     mol_list = []
-    """Список экземпляров класса Molecule
+    """ Список экземпляров класса Molecule
     """
     name = ''
-
     log_string = ''
-    """Строка с информацией о редактировании списка, т.е. как был получен
+    """ Строка с информацией о редактировании списка, т.е. как был получен
     """
+    common_field_order = []
+    """ Порядок и список отображения полей всех молекул на working panel
 
+        Является 'опцией'.
+    """
     def __init__(self, name):
-        """Конструктор класса
+        """ Конструктор класса
         """
         self.name = name
 
     def append_molecule(self, molecule_copy):
-        """Добавляет новый экземпляр класса Molecule в конец списка self.mol_list
+        """ Добавляет новый экземпляр класса Molecule в конец списка self.mol_list
         """
         self.mol_list.append(molecule_copy)
 
 
 def extract_molecules_list_from_sdf(file, name='Source'):
-    """Преобразует sdf в класс MoleculeList
+    """ Преобразует sdf в класс MoleculeList
 
-    Возвращет экземпляр класса 'Cписок молекул' по sdf. В случае пустого/не sdf возвращает None.
+        Возвращет экземпляр класса 'Cписок молекул' по sdf. В случае пустого/не sdf возвращает None.
     """
     file_as_string = file.read()
     molecules_count = file_as_string.count('$$$$')

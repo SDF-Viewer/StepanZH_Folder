@@ -27,7 +27,7 @@ class CanvasFrame(UnitedFrameWidget):
     """ Фрейм, содержащий рисунок молекулы и ползунки для навигации по рисунку
     """
     def __init__(self, root, width=500, height=500):
-        UnitedFrameWidget.__init__(self, root, width, height)
+        UnitedFrameWidget.__init__(self, root=root, width=width, height=height)
 
         self.Canvas = Canvas(self.FrameMe, width=int(width*0.9), scrollregion=(-600, -600, 600, 600), bg="lightyellow",
                              cursor="pencil")
@@ -54,7 +54,7 @@ root = Tk()
 file = open('sdf_list.sdf', 'tr')
 lm = extract_molecules_list_from_sdf(file)
 file.close()
-mol = lm.mol_list[1]
+mol = lm.mol_list[30]
 
 F = Frame(root)
 CFrame = CanvasFrame(F)
