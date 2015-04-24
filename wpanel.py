@@ -3,28 +3,7 @@ from molecules_list import *
 from module_ref import *
 
 
-class UnitedFrameWidget:
-    """ Класс-родитель для фрейма Working Panel и фреймов, его составляющих:
-        Canvas, Navigation, Fields ... Frames
-    """
-
-    def __init__(self, root, width=500, height=500):
-        """ Инициализация свойств объединяющих фреймы
-        """
-        # каждый экземпляр (сложный фрейм) помнит, частью какого объекта является
-        self.root = root
-        self.width = width
-        self.height = height
-        # UnitedFrameWidget прежде всего рамка
-        self.FrameMe = Frame(root, width=width, height=height, bg='lightblue')
-
-    def grid(self, row, column, sticky=''):
-        """ Размещает UnitedFrame
-        """
-        self.FrameMe.grid(row=row, column=column, sticky=sticky)
-
-
-class WorkingPanel(UnitedFrameWidget):
+class WorkingPanel(Frame):
     """ Рабочая панель, объединяющая 3 фрейма для работы со списком молекул
     """
 
@@ -32,11 +11,11 @@ class WorkingPanel(UnitedFrameWidget):
         """ Наследует свойства родителя, также закрепляет за собой MoleculeList,
             инициализирует 3 фрейма: рисунок молекулы, панель навигации и таблицу полей
         """
-        UnitedFrameWidget.__init__(self, root, width, height)
-        self.CanvasFrame = CanvasFrame(root=self.FrameMe, width=width, height=int(height * 0.5))
-        self.NavigationFrame = NavigationFrame(root=self.FrameMe, ParentWorkingPanel=self,
+        Frame.__init__(self, root, width=width, height=height)
+        self.CanvasFrame = CanvasFrame(root=self, width=width, height=int(height * 0.5))
+        self.NavigationFrame = NavigationFrame(root=self, ParentWorkingPanel=self,
                                                width=width, height=int(height * 0.1))
-        self.FieldsFrame = FieldsFrame(root=self.FrameMe, width=width, height=int(height * 0.4))
+        self.FieldsFrame = FieldsFrame(root=self, width=width, height=int(height * 0.4))
         self.create_scaffold()
         self.active_page = 0
         self.pages_sum = 0
@@ -72,9 +51,8 @@ class WorkingPanel(UnitedFrameWidget):
             else:
                 return
 
-
     def change_status(self, Molecule):
-        """ Наполняет составляющие содержимым, также подгружает новую молекулу
+        """ Наполняет составляющие содержимым, подгружает новую молекулу
         """
         self.NavigationFrame.change_status()
         self.CanvasFrame.fill(Molecule)
@@ -90,27 +68,29 @@ class WorkingPanel(UnitedFrameWidget):
         self.change_status(self.MoleculesList.mol_list[self.active_page - 1])
 
 
-class CanvasFrame(UnitedFrameWidget):
+class CanvasFrame(Frame):
     """ Фрейм, содержащий рисунок молекулы и ползунки для навигации по рисунку
     """
 
     def __init__(self, root, width=500, height=500):
-        UnitedFrameWidget.__init__(self, root, width, height)
+        Frame.__init__(self, root, width=width, height=height)
 
-        self.Canvas = Canvas(self.FrameMe, width=int(width * 0.9), scrollregion=(-200, -200, 600, 600),
+        self.Canvas = Canvas(self, width=int(width * 0.9), scrollregion=(-600, -600, 600, 600),
                              bg="lightyellow", cursor="pencil")
 
-        self.YScrollBar = Scrollbar(self.FrameMe, orient=VERTICAL)
+        self.YScrollBar = Scrollbar(self, orient=VERTICAL)
         self.YScrollBar.config(command=self.Canvas.yview)
         self.Canvas.config(yscrollcommand=self.YScrollBar.set)
 
-        self.XScrollBar = Scrollbar(self.FrameMe, orient=HORIZONTAL)
+        self.XScrollBar = Scrollbar(self, orient=HORIZONTAL)
         self.XScrollBar.config(command=self.Canvas.xview)
         self.Canvas.config(xscrollcommand=self.XScrollBar.set)
 
         self.YScrollBar.grid(row=0, column=0, sticky='ns')
         self.XScrollBar.grid(row=1, column=1, sticky='we')
         self.Canvas.grid(row=0, column=1)
+        self.Canvas.bind("<ButtonPress-1>", lambda event: self.Canvas.scan_mark(event.x, event.y))
+        self.Canvas.bind("<B1-Motion>", lambda event: self.Canvas.scan_dragto(event.x, event.y, gain=1))
 
     def fill(self, Molecule):
         """ Подгрузка Canvas другой молекулой
@@ -119,27 +99,27 @@ class CanvasFrame(UnitedFrameWidget):
         draw_mol(Molecule, self.Canvas)
 
 
-class NavigationFrame(UnitedFrameWidget):
+class NavigationFrame(Frame):
     def __init__(self, root, ParentWorkingPanel, width=500, height=100):
-        UnitedFrameWidget.__init__(self, root=root, width=width, height=height)
+        Frame.__init__(self, root, width=width, height=height)
 
         self.ParentWorkingPanel = ParentWorkingPanel
-        self.PreviousPageButton = Button(self.FrameMe, text='<')
+        self.PreviousPageButton = Button(self, text='<')
         self.PreviousPageButton.grid(row=0, column=0)
 
-        self.NextPageButton = Button(self.FrameMe, text='>')
+        self.NextPageButton = Button(self, text='>')
         self.NextPageButton.grid(row=0, column=1)
 
-        self.PositionLabel = Label(self.FrameMe, text='0/0')
+        self.PositionLabel = Label(self, text='0/0')
         self.PositionLabel.grid(row=0, column=2)
 
-        self.GoToPageButton = Button(self.FrameMe, text='Перейти')
+        self.GoToPageButton = Button(self, text='Перейти')
         self.GoToPageButton.grid(row=0, column=3)
 
-        self.GoToPageEntry = Entry(self.FrameMe)
+        self.GoToPageEntry = Entry(self)
         self.GoToPageEntry.grid(row=0, column=4)
 
-        self.CallListButton = Button(self.FrameMe, text='Список молекул')
+        self.CallListButton = Button(self, text='Список молекул')
         self.CallListButton.grid(row=0, column=5)
 
         self.set_binding()
@@ -165,8 +145,15 @@ class NavigationFrame(UnitedFrameWidget):
         self.ParentWorkingPanel.turn_page(page_code=-2)
 
 
-class FieldsFrame(UnitedFrameWidget):
-    pass
+class FieldsFrame(Frame):
+    def __init__(self, root, width=500, height=500):
+        Frame.__init__(self, root, width=width, height=height)
+        import tkinter.ttk
+
+        self.Table = tkinter.ttk.Treeview(self)
+
+    def fill(self, Molecule, common_order_list=None):
+        pass
 
 
 ######################################################################################
@@ -177,6 +164,7 @@ file.close()
 root = Tk()
 
 WPanelFrameLeft = WorkingPanel(root, MoleculesList=lm)
+# print(WPanelFrameLeft.MoleculesList == lm)
 
 WPanelFrameLeft.grid(row=0, column=0)
 root.mainloop()
