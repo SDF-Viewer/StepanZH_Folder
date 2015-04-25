@@ -41,22 +41,27 @@ class WorkingPanel(Frame):
             # определяем страницу, на которую нужно переключиться, исключая невозможные варианты
             if 0 < page_code <= self.pages_sum:
                 self.active_page = page_code
-                self.change_status(MoleculesList.mol_list[self.active_page - 1])
+                self.change_status(Molecule=MoleculesList.mol_list[self.active_page - 1])
             elif (page_code == -2) and (self.active_page > 1):
                 self.active_page -= 1
-                self.change_status(MoleculesList.mol_list[self.active_page - 1])
+                self.change_status(Molecule=MoleculesList.mol_list[self.active_page - 1])
             elif (page_code == -1) and (self.active_page < self.pages_sum):
                 self.active_page += 1
-                self.change_status(MoleculesList.mol_list[self.active_page - 1])
+                self.change_status(Molecule=MoleculesList.mol_list[self.active_page - 1])
             else:
                 return
 
-    def change_status(self, Molecule):
+    def change_status(self, Molecule, set_empty_status=False):
         """ Наполняет составляющие содержимым, подгружает новую молекулу
         """
-        self.NavigationFrame.change_status()
-        self.CanvasFrame.fill(Molecule)
-        # подгрузить таблицу
+        if set_empty_status is False:
+            self.NavigationFrame.change_status()
+            self.FieldsFrame.fill(Molecule=Molecule)
+            self.CanvasFrame.fill(Molecule)
+        else:
+            self.active_page = 0
+            self.pages_sum = 0
+            self.MoleculesList = None
 
     def change_molecules_list(self, MoleculesList):
         import copy
@@ -65,7 +70,7 @@ class WorkingPanel(Frame):
         self.MoleculesList.mol_list = copy.deepcopy(MoleculesList.mol_list)
         self.active_page = 1
         self.pages_sum = len(MoleculesList.mol_list)
-        self.change_status(self.MoleculesList.mol_list[self.active_page - 1])
+        self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
 
 
 class CanvasFrame(Frame):
@@ -151,9 +156,25 @@ class FieldsFrame(Frame):
         import tkinter.ttk
 
         self.Table = tkinter.ttk.Treeview(self)
+        self.Table['columns'] = ('FieldValue')
+        self.Table.heading('#0', text='Название поля')
+        self.Table.heading('FieldValue', text='Значение поля')
+        # привязать скроллбар!!!
+
+        self.Table.grid(row=0, column=0)
 
     def fill(self, Molecule, common_order_list=None):
-        pass
+        Molecule.fill_default_field_order_list()
+        order_list = []
+        self.Table.delete(*self.Table.get_children())
+        if common_order_list is None:
+            order_list = Molecule.field_order_list
+        else:
+            order_list = common_order_list
+        for field_name in order_list:
+            # не прописывает Name полностью!!
+            self.Table.insert('', 'end', text=field_name,
+                              values=Molecule.fields_dict[field_name])
 
 
 ######################################################################################

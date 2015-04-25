@@ -36,7 +36,7 @@ class Molecule:
         """
         self.field_order_list.clear()
         for field in self.fields_dict.keys():
-            self.field_order_list.append((field, self.fields_dict[field]))
+            self.field_order_list.append(field)
         self.field_order_list.sort()
     
 

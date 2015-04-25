@@ -10,7 +10,7 @@ tree.column('1', anchor='w',  width=100)
 tree.column('2', anchor='e', width=100)
 
 tree.heading('#0', text='1616')
-tree.heading('1', text='Field')
+tree.heading('FieldValue', text='Field')
 tree.heading('2', text='Value')
 for i in range(50):
     tree.insert('', 'end', text=str(i), values=('2'))
