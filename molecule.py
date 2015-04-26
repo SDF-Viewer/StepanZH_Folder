@@ -6,21 +6,18 @@ class Molecule:
     Содержит информацию об одной молекуле, дублирует кусок SDF
     """
     
-    header_list = []
-    #название, etc информация, комментарий
-    counts_line = []
-    #состоит из строковых! значений counts_line sdf
-    atom_block = []
-    #float двумерная матрица, в 4 столбце string - обозначение атома 
-    bond_block = []
-    #float двумерная матрица
-    fields_dict = {}
-    #словарь списков, каждый список - строчка поля в sdf (бывают многострочные поля)
-    field_order_list = []
-    #упорядоченный список к отображению в working panel
-    
-    #def __init__(self):
-        #self.fill_order_list()
+    def __init__(self):
+        self.header_list = []
+        #название, etc информация, комментарий
+        self.counts_line = []
+        #состоит из строковых! значений counts_line sdf
+        self.atom_block = []
+        #float двумерная матрица, в 4 столбце string - обозначение атома
+        self.bond_block = []
+        #float двумерная матрица
+        self.fields_dict = {}
+        #словарь списков, каждый список - строчка поля в sdf (бывают многострочные поля)
+
     def get_atom_count(self):
         """Возвращает количество атомов в молекуле
         """
@@ -34,11 +31,11 @@ class Molecule:
     def fill_default_field_order_list(self):
         """Заполняет список полей к отображению по умолчанию
         """
-        self.field_order_list.clear()
+        field_order_list = []
         for field in self.fields_dict.keys():
-            self.field_order_list.append(field)
-        self.field_order_list.sort()
-    
+            field_order_list.append(field)
+        field_order_list.sort()
+        return field_order_list
 
 def extract_molecule_by_string(input_string):
     """Преобразует кусок sdf в класс Molecule

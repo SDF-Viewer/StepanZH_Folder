@@ -5,22 +5,23 @@ class MoleculesList:
     """ Список молекул
     """
 
-    mol_list = []
-    """ Список экземпляров класса Molecule
-    """
-    name = ''
-    log_string = ''
-    """ Строка с информацией о редактировании списка, т.е. как был получен
-    """
-    common_field_order = []
-    """ Порядок и список отображения полей всех молекул на working panel
-
-        Является 'опцией'.
-    """
     def __init__(self, name):
         """ Конструктор класса
         """
         self.name = name
+        """ Название списка
+        """
+        self.mol_list = []
+        """ Список экземпляров класса Molecule
+        """
+        self.log_string = ''
+        """ Строка с информацией о редактировании списка, т.е. как был получен
+        """
+        self.common_field_order = []
+        """ Порядок и список отображения полей всех молекул на working panel
+
+            Является 'опцией'.
+        """
 
     def append_molecule(self, molecule_copy):
         """ Добавляет новый экземпляр класса Molecule в конец списка self.mol_list
@@ -36,7 +37,7 @@ def extract_molecules_list_from_sdf(file, name='Source'):
     file_as_string = file.read()
     molecules_count = file_as_string.count('$$$$')
     if molecules_count != 0:
-        OutputClass = MoleculesList(name)
+        OutputClass = MoleculesList(name=name)
         string_list = file_as_string.split('\n$$$$\n', molecules_count - 1)
         # print(string_list)
         # рассплитили на строчки с информацией об отдельной молекуле
