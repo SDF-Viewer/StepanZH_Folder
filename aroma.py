@@ -1,5 +1,4 @@
-dict_of_aroma_bonds, spTree, type_bond_gl = ({}, [], 0)
-three_valencies = set()
+
 
 
 def into_aroma_dict(start, finish, weight):
