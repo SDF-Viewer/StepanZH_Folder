@@ -8,7 +8,7 @@ def for_circle(x, y, radius):
 def into_center(center):
     global mol_gl
     summa, num, x_y_0 = ([0, 0], [0, 0], [0, 0])
-    optimal_part = 9/10
+    optimal_part = 0.85
     max_size = [0, 0]
     min_size = [0, 0]
     
@@ -21,25 +21,45 @@ def into_center(center):
     for num_atom in range(len(mol_gl.atom_block)):
         atom = mol_gl.atom_block[num_atom]
         for i in 0, 1:
-            atom[i] -= x_y_0[i]
+            #atom[i] -= x_y_0[i]
             current_size = atom[i]
+            '''if num_atom == 0:
+                max_size[i] = current_size
+                min_size[i] = current_size'''
+            if (max_size[i] < current_size) or (num_atom == 0):
+                max_size[i] = current_size
+            if (min_size[i] > current_size) or (num_atom == 0):
+                min_size[i] = current_size
+    scale = [0, 0]
+    delta = [0, 0]
+    print(max_size, min_size)
+    for i in 0, 1:
+        k = (max_size[i] - min_size[i]) / 2
+        delta[i] = (max_size[i] + min_size[i]) / 2
+        # k = max(max_size[i], abs(min_size[i]))
+        scale[i] = center[i] * optimal_part / k
+    scale = min(*scale)
+    print(optimal_part, max_size, scale)
+    max_size = [0, 0]
+    min_size = [0, 0]
+    for num_atom in range(len(mol_gl.atom_block)):
+        atom = mol_gl.atom_block[num_atom]
+        for i in 0, 1:
+            atom[i] -= delta[i]
+            atom[i] *= scale
+            atom[i] += center[i]
+            '''current_size = atom[i]
             if max_size[i] < current_size:
                 max_size[i] = current_size
             if min_size[i] > current_size:
                 min_size[i] = current_size
-    scale = [0, 0]
+    print('yes', max_size, min_size)
     for i in 0, 1:
-        scale[i] = center[i] * optimal_part / (max_size[i] - min_size[i]) * 2
-    scale = min(*scale)
-    print(optimal_part, max_size, scale)
+        delta[i] = center[i] - (max_size[i] + min_size[i]) / 2
     for num_atom in range(len(mol_gl.atom_block)):
         atom = mol_gl.atom_block[num_atom]
         for i in 0, 1:
-            atom[i] *= scale
-            atom[i] += center[i]
-            pass
-        pass
-            
+            atom[i] += delta[i]'''
 def double_line(bond, ro=1):
     import math
     dist = 2
