@@ -85,8 +85,7 @@ class CanvasFrame(Frame):
     def __init__(self, root, **kwargs):
         Frame.__init__(self, root, **kwargs)
 
-        self.Canvas = Canvas(self, scrollregion=(-600, -600, 600, 600),
-                             bg="lightyellow", cursor="pencil")
+        self.Canvas = Canvas(self, bg="lightyellow", cursor="pencil")
 
         self.YScrollBar = Scrollbar(self, orient=VERTICAL)
         self.YScrollBar.config(command=self.Canvas.yview)
@@ -109,7 +108,7 @@ class CanvasFrame(Frame):
         MoleculeCopy = copy.deepcopy(Molecule)
         MoleculeCopy.bond_block = copy.deepcopy(Molecule.bond_block)
         MoleculeCopy.atom_block = copy.deepcopy(Molecule.atom_block)
-
+        "отцентровать холст! при перелистовании"
         self.Canvas.delete("all")
         module_ref.draw_mol(mol=MoleculeCopy, canv=self.Canvas)
 

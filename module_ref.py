@@ -1,14 +1,17 @@
 mol_gl, canv_gl = (0, 0)
 dict_of_aroma_bonds, type_bond_gl = ({}, 0)
 three_valencies = set()
-#from aroma import*
 
 def for_circle(x, y, radius):
     return [x-radius, y-radius, x+radius, y+radius]
 
-def into_center(scale, center):
+def into_center(center):
     global mol_gl
     summa, num, x_y_0 = ([0, 0], [0, 0], [0, 0])
+    optimal_part = 9/10
+    max_size = [0, 0]
+    min_size = [0, 0]
+    
     for atom in mol_gl.atom_block:
         for i in 0, 1:
             summa[i] += atom[i]
@@ -19,34 +22,24 @@ def into_center(scale, center):
         atom = mol_gl.atom_block[num_atom]
         for i in 0, 1:
             atom[i] -= x_y_0[i]
+            current_size = atom[i]
+            if max_size[i] < current_size:
+                max_size[i] = current_size
+            if min_size[i] > current_size:
+                min_size[i] = current_size
+    scale = [0, 0]
+    for i in 0, 1:
+        scale[i] = center[i] * optimal_part / (max_size[i] - min_size[i]) * 2
+    scale = min(*scale)
+    print(optimal_part, max_size, scale)
+    for num_atom in range(len(mol_gl.atom_block)):
+        atom = mol_gl.atom_block[num_atom]
+        for i in 0, 1:
             atom[i] *= scale
-            atom[i] += center
+            atom[i] += center[i]
+            pass
+        pass
             
-'''def callFriends(vertex):
-    three_valencies.add(vertex)
-    for friend in dict_of_aroma_bonds[vertex]:
-        if friend not in three_valencies:
-            weight=dict_of_aroma_bonds[vertex][friend]
-            start=vertex
-            finish=friend
-            if start not in spTree:
-                spTree[start] = {finish:weight}
-            else:
-                spTree[start][finish] = weight
-            if finish not in spTree:
-                spTree[finish] = {start:weight}
-            else:
-                spTree[finish][start] = weight
-            callFriends(friend)
-'''
-'''def dfs_aroma(atom):
-    
-    pass
-
-def draw_aroma_bonds():
-    #print("draw_aroma_bonds works")
-    pass
-'''
 def double_line(bond, ro=1):
     import math
     dist = 2
@@ -86,37 +79,19 @@ def draw_bond(num_atom1, num_atom2, type_bond):
         canv_gl.create_line(*bond[:4],width=2,tag=str(type_bond))
     else:
         canv_gl.create_line(*bond[:4],width=2,tag=str(type_bond), fill="red")
-'''def printAsListOfArcs(tree):
-    for start in tree:
-        for finish in tree[start]:
-            print(start, finish, tree[start][finish])'''
-'''def jk():
-    dict_of_aroma_bonds = into_aroma_dict()
-    three_valencies = set()
-    spTree = {}
-    numOfComp = 0
-    for key in dict_of_aroma_bonds:
-        if key in called:
-            continue
-        else:
-            callFriends(key)
-            printAsListOfArcs(spTree)
-            spTree = {}
-            print()
-            numOfComp += 1
-        
 
-    print("Number of components:",numOfComp)
-'''
-def draw_mol(mol, canv, scale=70, center=400):
+def draw_mol(mol, canv):
     global mol_gl, canv_gl, dict_of_aroma_bonds, type_bond_gl, three_valencies
     dict_of_aroma_bonds, type_bond_gl = ({}, 0)
     three_valencies = set()
     import copy
     mol_gl = copy.deepcopy(mol)
     canv_gl = canv
-
-    into_center(scale, center)
+    hight = canv.winfo_reqheight()/2
+    width = canv.winfo_reqwidth()/2
+    center = [width, hight]
+    print(center)
+    into_center(center)
     for num_bond in range(len(mol_gl.bond_block)):
         bond = mol_gl.bond_block[num_bond][:3]
         if bond[2] == 4:
@@ -129,22 +104,13 @@ def draw_mol(mol, canv, scale=70, center=400):
         for near_atom in dict_of_aroma_bonds[atom]:
             bond = [atom, near_atom, dict_of_aroma_bonds[atom][near_atom]]
             draw_bond(*bond)
-    #print("dict_of_aroma_bonds:\n", dict_of_aroma_bonds)
-    
-    #print("dict_of_aroma_bonds:\n", dict_of_aroma_bonds)
-    '''if dict_of_aroma_bonds != []:
-        for atom in dict_of_aroma_bonds:
-            dfs_aroma(atom)
-            draw_aroma_bonds()
-    '''   
+       
     for atom in mol_gl.atom_block:
         x_y = atom[:2]
         x_y_r = for_circle(*x_y, radius=7)
         canv_gl.create_oval(*x_y_r, fill="lightyellow", outline="lightyellow")
         canv_gl.create_text(*x_y, text=atom[3],font="Verdana 12",fill="red")
-    #обнуление глобальных переменных
-    #mol_gl, canv_gl = (0, 0)
-    #three_valencies = set()
+    
 
 def into_aroma_dict(start, finish, weight):
     global dict_of_aroma_bonds
@@ -204,15 +170,7 @@ def dfs_aroma(atom): #, num_of_spanning_trees):
             #print("dict_of_aroma_bonds: \n", dict_of_aroma_bonds)
             type_bond_gl += 1
             last_atom = dfs_aroma(near_atom) #, num_of_spanning_trees)
-    return last_atom 
-    '''if len(three_valencies) == len(dict_of_aroma_bonds):
-        for near_atom in dict_of_aroma_bonds[atom]:
-            if len(dict_of_aroma_bonds[atom][near_atom]) == 1:
-                print("fail")
-                break
-        cheque_fail.append(dict_of_aroma_bonds[atom][near_atom][1])
-    if cheque_fail == [1, 1, 1]:
-        print'''
+    return last_atom
         
 
 
