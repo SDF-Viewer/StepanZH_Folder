@@ -5,7 +5,7 @@ three_valencies = set()
 def for_circle(x, y, radius):
     return [x-radius, y-radius, x+radius, y+radius]
 
-def into_center(center):
+def into_center(center, scale0):
     global mol_gl
     summa, num, x_y_0 = ([0, 0], [0, 0], [0, 0])
     optimal_part = 0.85
@@ -38,7 +38,7 @@ def into_center(center):
         delta[i] = (max_size[i] + min_size[i]) / 2
         # k = max(max_size[i], abs(min_size[i]))
         scale[i] = center[i] * optimal_part / k
-    scale = min(*scale)
+    scale = min(*scale) * scale0
     # print(optimal_part, max_size, scale)
     for num_atom in range(len(mol_gl.atom_block)):
         atom = mol_gl.atom_block[num_atom]
@@ -98,18 +98,18 @@ def draw_bond(num_atom1, num_atom2, type_bond):
     else:
         canv_gl.create_line(*bond[:4],width=2,tag=str(type_bond), fill="red")
 
-def draw_mol(mol, canv):
+def draw_mol(mol, canv0, scale = 1):
     global mol_gl, canv_gl, dict_of_aroma_bonds, type_bond_gl, three_valencies
     dict_of_aroma_bonds, type_bond_gl = ({}, 0)
     three_valencies = set()
     import copy
     mol_gl = copy.deepcopy(mol)
-    canv_gl = canv
-    hight = canv.winfo_reqheight()/2
-    width = canv.winfo_reqwidth()/2
-    center = [width, hight]
+    canv_gl = canv0
+    height = canv0.winfo_reqheight()/2
+    width = canv0.winfo_reqwidth()/2
+    center = [width, height]
     print(center)
-    into_center(center)
+    into_center(center, scale0 = scale)
     for num_bond in range(len(mol_gl.bond_block)):
         bond = mol_gl.bond_block[num_bond][:3]
         if bond[2] == 4:
@@ -190,6 +190,14 @@ def dfs_aroma(atom): #, num_of_spanning_trees):
             last_atom = dfs_aroma(near_atom) #, num_of_spanning_trees)
     return last_atom
         
+def scroll_region_scaling(height, width, scale):
+    global canv_gl
+    height *= scale
+    width *= scale
+    #canv_gl.scrollregion = (-width, -height, width, height)
+    #canv_gl.Canvas()
+
+    pass
 
 
     
