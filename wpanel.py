@@ -13,8 +13,9 @@ class WorkingPanel(Frame):
         """
         Frame.__init__(self, root, **kwargs)
         self.CanvasFrame = CanvasFrame(root=self, bg='lightblue')
-        self.NavigationFrame = NavigationFrame(root=self, ParentWorkingPanel=self, bg='red')
+        self.NavigationFrame = NavigationFrame(root=self, bg='red')
         self.FieldsFrame = FieldsFrame(root=self, bg='lightgreen')
+        #self.TitleFrame = TitleFrame(root=self, bg='red')
         self.create_scaffold()
         self.active_page = 0
         self.pages_sum = 0
@@ -27,13 +28,18 @@ class WorkingPanel(Frame):
     def create_scaffold(self):
         """ Размещает составляющие на WorkingPanel друг под другом
         """
-        self.CanvasFrame.grid(row=0, column=0, sticky='we')
-        self.NavigationFrame.grid(row=1, column=0, sticky='we')
-        self.FieldsFrame.grid(row=2, column=0, sticky='wes')
 
-        self.CanvasFrame.rowconfigure(0, weight=38)
+        #self.TitleFrame.grid(row=0, column=0, sticky='we')
+        self.CanvasFrame.grid(row=1, column=0, sticky='we')
+        self.NavigationFrame.grid(row=2, column=0, sticky='we')
+        self.FieldsFrame.grid(row=3, column=0, sticky='wes')
+
+        #self.TitleFrame.rowconfigure(0, weight=5)
+        self.CanvasFrame.rowconfigure(1, weight=38)
         self.NavigationFrame.rowconfigure(2, weight=18)
-        self.FieldsFrame.rowconfigure(1, weight=10)
+        self.FieldsFrame.rowconfigure(3, weight=10)
+
+        #self.TitleFrame.fill()
 
     def turn_page(self, page_code):
         """ Смена отображаемого элемента списка молекул
@@ -54,7 +60,7 @@ class WorkingPanel(Frame):
             else:
                 return
 
-    def change_status(self, Molecule, set_empty_status=False):
+    def change_status(self, Molecule=None, set_empty_status=False):
         """ Наполняет составляющие содержимым, подгружает новую молекулу
         """
         if set_empty_status is False:
@@ -66,16 +72,35 @@ class WorkingPanel(Frame):
             self.pages_sum = 0
             self.MoleculesList = None
             self.NavigationFrame.change_status()
+            #self.TitleFrame.fill()
 
     def change_molecules_list(self, MoleculesList):
         import copy
-        # self.MoleculesList = MoleculesList
+        self.MoleculesList = MoleculesList
         self.MoleculesList = copy.deepcopy(MoleculesList)
         self.MoleculesList.mol_list = copy.deepcopy(MoleculesList.mol_list)
         self.active_page = 1
         self.pages_sum = len(MoleculesList.mol_list)
         self.NavigationFrame.fill_molecules_box()
+        #self.TitleFrame.fill()
         self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
+
+
+class TitleFrame(Frame):
+    def __init__(self, root, **kwargs):
+        Frame.__init__(self, root, **kwargs)
+        self.ParentWorkingFrame = root
+        self.TitleLabel = Label(self)
+        self.fill()
+
+        self.TitleLabel.grid(row=0, column=0, sticky='we')
+
+    def fill(self):
+        if self.ParentWorkingFrame.MoleculesList is not None:
+            molecules_list_name = self.ParentWorkingFrame.MoleculesList.name
+        else:
+            molecules_list_name = 'Файл не выбран'
+        self.TitleLabel.config(text=molecules_list_name)
 
 
 class CanvasFrame(Frame):
@@ -85,7 +110,7 @@ class CanvasFrame(Frame):
     def __init__(self, root, **kwargs):
         Frame.__init__(self, root, **kwargs)
 
-        self.Canvas = Canvas(self, bg="lightyellow", cursor="pencil")
+        self.Canvas = Canvas(self, bg="lightyellow")
 
         self.YScrollBar = Scrollbar(self, orient=VERTICAL)
         self.YScrollBar.config(command=self.Canvas.yview)
@@ -104,20 +129,21 @@ class CanvasFrame(Frame):
     def fill(self, Molecule):
         """ Подгрузка Canvas другой молекулой
         """
+
         import copy
         MoleculeCopy = copy.deepcopy(Molecule)
         MoleculeCopy.bond_block = copy.deepcopy(Molecule.bond_block)
         MoleculeCopy.atom_block = copy.deepcopy(Molecule.atom_block)
-        "отцентровать холст! при перелистовании"
+        """отцентровать холст! при перелистовании"""
         self.Canvas.delete("all")
         module_ref.draw_mol(mol=MoleculeCopy, canv=self.Canvas)
 
 
 class NavigationFrame(Frame):
-    def __init__(self, root, ParentWorkingPanel, **kwargs):
+    def __init__(self, root, **kwargs):
         Frame.__init__(self, root, **kwargs)
 
-        self.ParentWorkingPanel = ParentWorkingPanel
+        self.ParentWorkingPanel = root
         self.PreviousPageButton = Button(self, text='<')
         self.PreviousPageButton.grid(row=0, column=0, sticky='e')
 
@@ -223,6 +249,7 @@ class FieldsFrame(Frame):
 
 
 ######################################################################################
+'''
 file = open('sdf_list.sdf', 'tr')
 lm = extract_molecules_list_from_sdf(file, 'Source')
 file.close()
@@ -234,3 +261,4 @@ WPanelFrameLeft = WorkingPanel(root=root, MoleculesList=lm, bg='red')
 
 WPanelFrameLeft.grid(row=0, column=0, sticky=(N, E, W, S))
 root.mainloop()
+'''
