@@ -99,13 +99,10 @@ class TitleFrame(Frame):
         self.TitleLabel.grid(row=0, column=0, sticky='we')
 
     def fill(self):
-        molecules_list_name = 'a'
         if self.ParentWorkingFrame.MoleculesList is not None:
             molecules_list_name = self.ParentWorkingFrame.MoleculesList.name
         else:
             molecules_list_name = 'Файл не выбран'
-
-        print(molecules_list_name)
         self.TitleLabel.configure(text=molecules_list_name)
 
 
@@ -253,18 +250,3 @@ class FieldsFrame(Frame):
             self.Table.insert('', 'end', text=field_name,
                               values=(Molecule.fields_dict[field_name],))
 
-
-######################################################################################
-'''
-file = open('sdf_list.sdf', 'tr')
-lm = extract_molecules_list_from_sdf(file, 'Source')
-file.close()
-
-root = Tk()
-
-WPanelFrameLeft = WorkingPanel(root=root, MoleculesList=lm, bg='red')
-# print(WPanelFrameLeft.MoleculesList == lm)
-
-WPanelFrameLeft.grid(row=0, column=0, sticky=(N, E, W, S))
-root.mainloop()
-'''
