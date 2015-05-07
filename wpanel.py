@@ -69,6 +69,7 @@ class WorkingPanel(Frame):
         if set_empty_status is False:
             self.NavigationFrame.change_status()
             self.FieldsFrame.fill(Molecule=Molecule)
+            self.CanvasFrame.scale = 1
             self.CanvasFrame.fill(Molecule=Molecule)
         else:
             self.active_page = 0
@@ -114,6 +115,8 @@ class CanvasFrame(Frame):
         Frame.__init__(self, root, **kwargs)
 
         self.Canvas = Canvas(self, bg="lightyellow")
+        self.scale = 1
+        self.Molecule = None
 
         self.YScrollBar = Scrollbar(self, orient=VERTICAL)
         self.YScrollBar.config(command=self.Canvas.yview)
@@ -130,18 +133,33 @@ class CanvasFrame(Frame):
         #print(self.CanvasCenter)
         self.Canvas.bind("<ButtonPress-1>", lambda event: self.Canvas.scan_mark(event.x, event.y))
         self.Canvas.bind("<B1-Motion>", lambda event: self.Canvas.scan_dragto(event.x, event.y, gain=1))
+        self.Canvas.bind("<MouseWheel>", self.change_scale)
 
-    def fill(self, Molecule, scale=1):
+    def fill(self, Molecule=None, scale=1):
         """ Подгрузка Canvas другой молекулой / масштаббирование
         """
 
-        import copy
-        MoleculeCopy = copy.deepcopy(Molecule)
-        MoleculeCopy.bond_block = copy.deepcopy(Molecule.bond_block)
-        MoleculeCopy.atom_block = copy.deepcopy(Molecule.atom_block)
-        """отцентровать холст! при перелистовании"""
-        self.Canvas.delete("all")
-        module_ref.draw_mol(mol=MoleculeCopy, canv0=self.Canvas, scale=scale)
+        if Molecule is not None:
+            import copy
+            MoleculeCopy = copy.deepcopy(Molecule)
+            MoleculeCopy.bond_block = copy.deepcopy(Molecule.bond_block)
+            MoleculeCopy.atom_block = copy.deepcopy(Molecule.atom_block)
+            """отцентровать холст! при перелистовании"""
+            self.Molecule = MoleculeCopy
+            self.Canvas.delete("all")
+            module_ref.draw_mol(mol=MoleculeCopy, canv0=self.Canvas, scale=self.scale)
+            self.Canvas.scan_mark(0, 0)
+
+    def change_scale(self, event):
+        """ Масштабирование молекулы
+        """
+
+        if event.delta == 120 and self.scale <= 15:
+            self.scale += 0.5
+            self.fill(Molecule=self.Molecule, scale=self.scale)
+        elif event.delta == -120 and self.scale >= 1:
+            self.scale -= 0.5
+            self.fill(Molecule=self.Molecule, scale=self.scale)
 
 
 class NavigationFrame(Frame):

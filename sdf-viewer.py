@@ -1,7 +1,7 @@
 """ SDF-Viewer
 """
 
-import sys
+
 from tkinter import*
 from wpanel import*
 from menu_bar import*
