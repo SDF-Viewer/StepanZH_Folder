@@ -32,16 +32,14 @@ def into_center(center):
                 min_size[i] = current_size
     scale = [0, 0]
     delta = [0, 0]
-    print(max_size, min_size)
+    # print(max_size, min_size)
     for i in 0, 1:
         k = (max_size[i] - min_size[i]) / 2
         delta[i] = (max_size[i] + min_size[i]) / 2
         # k = max(max_size[i], abs(min_size[i]))
         scale[i] = center[i] * optimal_part / k
     scale = min(*scale)
-    print(optimal_part, max_size, scale)
-    max_size = [0, 0]
-    min_size = [0, 0]
+    # print(optimal_part, max_size, scale)
     for num_atom in range(len(mol_gl.atom_block)):
         atom = mol_gl.atom_block[num_atom]
         for i in 0, 1:
