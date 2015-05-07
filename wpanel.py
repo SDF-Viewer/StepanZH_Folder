@@ -126,6 +126,8 @@ class CanvasFrame(Frame):
         self.YScrollBar.grid(row=0, column=0, sticky='ns')
         self.XScrollBar.grid(row=1, column=1, sticky='we')
         self.Canvas.grid(row=0, column=1, sticky='we')
+        #self.CanvasCenter = (self.Canvas.canvasx, self.Canvas.canvasy)
+        #print(self.CanvasCenter)
         self.Canvas.bind("<ButtonPress-1>", lambda event: self.Canvas.scan_mark(event.x, event.y))
         self.Canvas.bind("<B1-Motion>", lambda event: self.Canvas.scan_dragto(event.x, event.y, gain=1))
 
