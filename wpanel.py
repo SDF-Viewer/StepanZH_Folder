@@ -110,7 +110,7 @@ class CanvasFrame(Frame):
         MoleculeCopy.atom_block = copy.deepcopy(Molecule.atom_block)
         "отцентровать холст! при перелистовании"
         self.Canvas.delete("all")
-        module_ref.draw_mol(mol=MoleculeCopy, canv=self.Canvas)
+        module_ref.draw_mol(mol=MoleculeCopy, canv0=self.Canvas)
 
 
 class NavigationFrame(Frame):
