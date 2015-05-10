@@ -165,7 +165,9 @@ def draw_mol(mol, canv0, scale=1):
         x_y = atom[:2]
         x_y_r = for_circle(*x_y, radius=7)
         canv_gl.create_oval(*x_y_r, fill="lightyellow", outline="lightyellow")
-        canv_gl.create_text(*x_y, text=atom[3], font="Verdana 12", fill="red")
+        name = atom[3]
+        color_name = "darkgrey" if name == "C" else "red"
+        canv_gl.create_text(*x_y, text=name, font="Verdana 12", fill=color_name)
 
 
 def into_aroma_dict(start, finish, weight):
