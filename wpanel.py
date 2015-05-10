@@ -129,11 +129,15 @@ class CanvasFrame(Frame):
         self.YScrollBar.grid(row=0, column=0, sticky='ns')
         self.XScrollBar.grid(row=1, column=1, sticky='we')
         self.Canvas.grid(row=0, column=1, sticky='we')
+        self.Canvas.config(scrollregion=(0, 0, self.Canvas.winfo_reqwidth(), self.Canvas.winfo_reqheight()))
         #self.CanvasCenter = (self.Canvas.canvasx, self.Canvas.canvasy)
         #print(self.CanvasCenter)
         self.Canvas.bind("<ButtonPress-1>", lambda event: self.Canvas.scan_mark(event.x, event.y))
         self.Canvas.bind("<B1-Motion>", lambda event: self.Canvas.scan_dragto(event.x, event.y, gain=1))
         self.Canvas.bind("<MouseWheel>", self.change_scale)
+        # доделать клавиатурную версию масштабирования, нужно изменить change_scale() или сделать новую
+        # найти новые сочетания клавишь
+        # self.Canvas.bind("<Control-+>", self.change_scale)
 
     def fill(self, Molecule=None, scale=1):
         """ Подгрузка Canvas другой молекулой / масштаббирование
@@ -157,7 +161,7 @@ class CanvasFrame(Frame):
         if event.delta == 120 and self.scale <= 15:
             self.scale += 0.5
             self.fill(Molecule=self.Molecule, scale=self.scale)
-        elif event.delta == -120 and self.scale >= 1:
+        elif event.delta == -120 and self.scale > 1:
             self.scale -= 0.5
             self.fill(Molecule=self.Molecule, scale=self.scale)
 

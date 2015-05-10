@@ -132,9 +132,14 @@ def draw_mol(mol, canv0, scale=1):
     mol_gl = copy.deepcopy(mol)
     canv_gl = canv0
     " получает высоту и ширину холста - получает поправки для переноса молекулы в центр холста"
-    height = canv0.winfo_reqheight() / 2
-    width = canv0.winfo_reqwidth() / 2
-    center = [width, height]
+    height = canv0.winfo_reqheight()
+    width = canv0.winfo_reqwidth()
+    center = [width / 2, height / 2]
+    " изменяет область прокрутки с увеличением масштаба"
+    difference = (scale - 1) / 2
+    delta_width = width * difference
+    delta_height = height * difference
+    canv_gl.config(scrollregion=(0 - delta_width, 0 - delta_height, width + delta_width, height + delta_height))
     " перенос координат атомов молекулы в центр и масштабирование длин связей"
     into_center(center, scale0=scale)
     """
