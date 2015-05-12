@@ -18,6 +18,8 @@ class AppWindow(Tk):
 
         self.WorkingFrame.grid(row=0, column=0, sticky='nwes')
 
+        self.resizable(0, 0)
+
         ### DATA ###
         self.open_file_name = None
         self.MoleculesListDB = []
@@ -26,6 +28,7 @@ class AppWindow(Tk):
         self.open_file_name = file_name
         file = open(file_name, 'tr')
         OpenMoleculeslist = extract_molecules_list_from_sdf(file, 'Source')
+        OpenMoleculeslist.source_file_name = file_name
         file.close()
 
         self.MoleculesListDB.append(OpenMoleculeslist)

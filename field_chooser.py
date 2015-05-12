@@ -8,6 +8,7 @@ class FieldChooser(Toplevel):
             Toplevel.__init__(self, master=root, **kwargs)
             self.ParentWindow = root
             self.title("Меню выбора полей")
+            self.resizable(0, 0)
             import copy
             self.input_order_list = copy.deepcopy(self.ParentWindow.WorkingFrame.showed_fields_list)
             self.union_field_list = list(self.ParentWindow.WorkingFrame.MoleculesList.get_union_fields_set())
@@ -19,8 +20,9 @@ class FieldChooser(Toplevel):
             self.SetCheckForAllButton = Button(self, text='Отметить все')
             self.SelectNoneCheckButton = Button(self, text='Снять все')
 
-            self.CheckListTable = Text(self, cursor='arrow', bg='lightgrey', width=70)
+            self.CheckListTable = Text(self, cursor='arrow', bg='lightgrey', width=30, height=17)
             self.TableScrollbar = Scrollbar(self, orient=VERTICAL)
+            # добавить игрек скроллбар либо менять что то с гридом/размерами
 
             self.ApplyButton = Button(self, text='Применить')
             self.CancelButton = Button(self, text='Отмена')
@@ -46,6 +48,7 @@ class FieldChooser(Toplevel):
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
         self.columnconfigure(2, weight=2)
+        self.columnconfigure(3, weight=1)
 
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)

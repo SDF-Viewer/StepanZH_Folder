@@ -11,6 +11,7 @@ class MoleculesList:
         self.name = name
         """ Название списка
         """
+        self.source_file_name = None
         self.mol_list = []
         """ Список экземпляров класса Molecule
         """

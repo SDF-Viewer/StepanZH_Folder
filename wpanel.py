@@ -16,6 +16,7 @@ class WorkingPanel(Frame):
         self.active_page = 0
         self.pages_sum = 0
         self.showed_fields_list = None
+        # self.showed_mol_list = None
         # исключение
         if MoleculesList is not None:
             # self.CurrMolecule = MoleculesList.mol_list[0]
@@ -28,7 +29,6 @@ class WorkingPanel(Frame):
         self.FieldsFrame = FieldsFrame(root=self, bg='lightgreen')
         self.TitleFrame = TitleFrame(root=self)
         self.create_scaffold()
-
 
     def create_scaffold(self):
         """ Размещает составляющие на WorkingPanel друг под другом
@@ -88,6 +88,7 @@ class WorkingPanel(Frame):
 
         self.showed_fields_list = list(self.MoleculesList.get_union_fields_set())
         self.showed_fields_list.sort()
+        # self.showed_mol_list =
 
         self.active_page = 1
         self.pages_sum = len(MoleculesList.mol_list)
@@ -265,8 +266,8 @@ class FieldsFrame(Frame):
         self.Table.heading('#0', text='Название поля')
         self.Table.heading('FieldValue', text='Значение поля')
         ''' сделать что-либо, чтобы табличка не уезжала при изменении размеров'''
-        # self.Table.column('#0', width=150)
-        # self.Table.column('FieldValue', minwidth=150)
+        self.Table.column('#0', stretch=True)
+        self.Table.column('FieldValue', stretch=True)
 
         self.YScrollBar = Scrollbar(self)
         self.YScrollBar.config(command=self.Table.yview)
