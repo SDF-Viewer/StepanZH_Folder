@@ -28,6 +28,14 @@ class MoleculesList:
         """
         self.mol_list.append(molecule_copy)
 
+    def get_common_fields_set(self):
+        """ Возвращает множество всех полей, встречающихся у молекул
+        """
+        output_set = set()
+        for Molecule in self.mol_list:
+            output_set |= set(Molecule.fields_dict.keys())
+        return output_set
+
 
 def extract_molecules_list_from_sdf(file, name='Source'):
     """ Преобразует sdf в класс MoleculeList

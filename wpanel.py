@@ -15,6 +15,7 @@ class WorkingPanel(Frame):
 
         self.active_page = 0
         self.pages_sum = 0
+        self.showed_fields_list = None
         # исключение
         if MoleculesList is not None:
             self.change_molecules_list(MoleculesList)
@@ -263,14 +264,17 @@ class FieldsFrame(Frame):
         self.Table.grid(row=0, column=0, sticky=(N, S, E, W))
         self.YScrollBar.grid(row=0, column=1, sticky=(N, S))
 
-    def fill(self, Molecule, common_order_list=None):
+    def fill(self, Molecule, undefault_order_list=None):
         self.Table.delete(*self.Table.get_children())
-        if common_order_list is None:
+        if undefault_order_list is None:
             order_list = Molecule.fill_default_field_order_list()
         else:
-            order_list = common_order_list
+            order_list = undefault_order_list
         for field_name in order_list:
-            # не прописывает Name полностью!!
-            self.Table.insert('', 'end', text=field_name,
-                              values=(Molecule.fields_dict[field_name],))
-
+            try:
+                # возможен key error
+                field_value = Molecule.fields_dict[field_name]
+                self.Table.insert('', 'end', text=field_name,
+                                  values=(field_value,))
+            except:
+                continue
