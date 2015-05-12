@@ -28,14 +28,22 @@ class MoleculesList:
         """
         self.mol_list.append(molecule_copy)
 
-    def get_common_fields_set(self):
-        """ Возвращает множество всех полей, встречающихся у молекул
+    def get_union_fields_set(self):
+        """ Возвращает объединение всех полей, встречающихся у молекул
         """
         output_set = set()
         for Molecule in self.mol_list:
             output_set |= set(Molecule.fields_dict.keys())
         return output_set
 
+    def get_product_fields_set(self):
+        """ Возвращает пересечение списков полей молекул
+        """
+        # не нулевое ли пересечеие будет?
+        output_set = set()
+        for Molecule in self.mol_list:
+            output_set &= set(Molecule.fields_dict.keys())
+        return output_set
 
 def extract_molecules_list_from_sdf(file, name='Source'):
     """ Преобразует sdf в класс MoleculeList

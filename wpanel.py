@@ -18,6 +18,7 @@ class WorkingPanel(Frame):
         self.showed_fields_list = None
         # исключение
         if MoleculesList is not None:
+            # self.CurrMolecule = MoleculesList.mol_list[0]
             self.change_molecules_list(MoleculesList)
         else:
             self.MoleculesList = None
@@ -81,14 +82,22 @@ class WorkingPanel(Frame):
 
     def change_molecules_list(self, MoleculesList):
         import copy
-        self.MoleculesList = MoleculesList
+        # self.MoleculesList = MoleculesList
         self.MoleculesList = copy.deepcopy(MoleculesList)
         self.MoleculesList.mol_list = copy.deepcopy(MoleculesList.mol_list)
+
+        self.showed_fields_list = list(self.MoleculesList.get_union_fields_set())
+        self.showed_fields_list.sort()
+
         self.active_page = 1
         self.pages_sum = len(MoleculesList.mol_list)
         self.NavigationFrame.fill_molecules_box()
         self.TitleFrame.fill()
         self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
+
+    def update_after_using_editor(self):
+        self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
+        # self.FieldsFrame.fill(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
 
 
 class TitleFrame(Frame):
@@ -149,7 +158,7 @@ class CanvasFrame(Frame):
             MoleculeCopy = copy.deepcopy(Molecule)
             MoleculeCopy.bond_block = copy.deepcopy(Molecule.bond_block)
             MoleculeCopy.atom_block = copy.deepcopy(Molecule.atom_block)
-            """отцентровать холст! при перелистовании"""
+            """ вроде бы потеряла актуальнсть: отцентровать холст! при перелистовании"""
             self.Molecule = MoleculeCopy
             self.Canvas.delete("all")
             module_ref.draw_mol(mol=MoleculeCopy, canv0=self.Canvas, scale=self.scale)
@@ -248,12 +257,14 @@ class NavigationFrame(Frame):
 class FieldsFrame(Frame):
     def __init__(self, root, **kwargs):
         Frame.__init__(self, root, **kwargs)
+        self.parent_working_panel = root
         import tkinter.ttk
 
         self.Table = tkinter.ttk.Treeview(self)
         self.Table['columns'] = ('FieldValue')
         self.Table.heading('#0', text='Название поля')
         self.Table.heading('FieldValue', text='Значение поля')
+        ''' сделать что-либо, чтобы табличка не уезжала при изменении размеров'''
         # self.Table.column('#0', width=150)
         # self.Table.column('FieldValue', minwidth=150)
 
@@ -264,12 +275,15 @@ class FieldsFrame(Frame):
         self.Table.grid(row=0, column=0, sticky=(N, S, E, W))
         self.YScrollBar.grid(row=0, column=1, sticky=(N, S))
 
-    def fill(self, Molecule, undefault_order_list=None):
+    def fill(self, Molecule):
         self.Table.delete(*self.Table.get_children())
+        undefault_order_list = self.parent_working_panel.showed_fields_list
+
         if undefault_order_list is None:
             order_list = Molecule.fill_default_field_order_list()
         else:
             order_list = undefault_order_list
+
         for field_name in order_list:
             try:
                 # возможен key error

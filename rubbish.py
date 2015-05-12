@@ -10,8 +10,20 @@ def ch_red(event):
 
 root = Tk()
 
-root.config()
+text = Text(root)
+ch_list = []
 
-root.bind('<MouseWheel>', ch_red)
+for i in range(9):
+    ch_list.append(1)
+    chb = Checkbutton(text='5', variable=ch_list[i], onvalue=1, offvalue=0)
+    chb.select()
+    text.window_create("end", window=chb)
+    text.insert("end", '\n')
 
+b = Button(root)
+b.pack()
+
+#b.bind("<Button-1>", lambda event: ch_list[5] = 1)
+
+text.pack()
 root.mainloop()

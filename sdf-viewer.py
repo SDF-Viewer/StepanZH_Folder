@@ -31,6 +31,9 @@ class AppWindow(Tk):
         self.MoleculesListDB.append(OpenMoleculeslist)
         self.WorkingFrame.change_molecules_list(OpenMoleculeslist)
 
+    def update_after_using_editor(self):
+        self.WorkingFrame.update_after_using_editor()
+
 
 def main(argv=None):
     if argv is None:
