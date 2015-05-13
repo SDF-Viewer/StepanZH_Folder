@@ -39,7 +39,7 @@ class WorkingPanel(Frame):
         """
 
         self.TitleFrame.grid(row=0, column=0, sticky='wen')
-        self.CanvasFrame.grid(row=1, column=0, sticky='nwes')
+        self.CanvasFrame.grid(row=1, column=0)
         self.NavigationFrame.grid(row=2, column=0, sticky='we')
         self.FieldsFrame.grid(row=3, column=0, sticky='wes')
 
@@ -114,7 +114,6 @@ class WorkingPanel(Frame):
         tkinter.messagebox.showerror(title='Сообщение', message='Файл битый')
 
 
-
 class TitleFrame(Frame):
     def __init__(self, root, **kwargs):
         Frame.__init__(self, root, **kwargs)
@@ -154,15 +153,15 @@ class CanvasFrame(Frame):
 
         self.YScrollBar.grid(row=0, column=0, sticky='ns')
         self.XScrollBar.grid(row=1, column=1, sticky='we')
-        self.Canvas.grid(row=0, column=1, sticky='we')
+        self.Canvas.grid(row=0, column=1, sticky='we' )
         self.Canvas.config(scrollregion=(0, 0, self.Canvas.winfo_reqwidth(), self.Canvas.winfo_reqheight()))
-        #self.CanvasCenter = (self.Canvas.canvasx, self.Canvas.canvasy)
-        #print(self.CanvasCenter)
+        # self.CanvasCenter = (self.Canvas.canvasx, self.Canvas.canvasy)
+        # print(self.CanvasCenter)
         self.Canvas.bind("<ButtonPress-1>", lambda event: self.Canvas.scan_mark(event.x, event.y))
         self.Canvas.bind("<B1-Motion>", lambda event: self.Canvas.scan_dragto(event.x, event.y, gain=1))
         self.Canvas.bind("<MouseWheel>", self.change_scale)
         # доделать клавиатурную версию масштабирования, нужно изменить change_scale() или сделать новую
-        # найти новые сочетания клавишь
+        # найти новые сочетания клавиш
         # self.Canvas.bind("<Control-+>", self.change_scale)
 
     def fill(self, Molecule=None, scale=1):

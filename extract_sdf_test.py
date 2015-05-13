@@ -16,7 +16,7 @@ for row in MolList.mol_list[0].header_list:
     print('FILE:\t', file_as_string[index])
     index += 1
     print('LIST:\t', row)
-# COUNTs LINE
+# COUNTS LINE
 print('FILE:\t', file_as_string[index])
 index += 1
 print('LIST:\t', end='  ')

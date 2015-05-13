@@ -9,7 +9,6 @@ class FieldChooser(Toplevel):
         self.ParentWindow = root
         if self.ParentWindow.WorkingFrame.MoleculesList is not None:
             Toplevel.__init__(self, master=root, **kwargs)
-            # print(self[])
             self.ParentWindow = root
             self.title("Меню выбора полей")
             self.resizable(0, 0)
