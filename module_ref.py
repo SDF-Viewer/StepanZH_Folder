@@ -64,13 +64,14 @@ def into_center(center, scale0):
         send_error_msg()
 
 
-def double_line(bond):
+def double_line(bond, ro=1):
     """ This function draws a double bond
 
     :param bond: depicted bond
+    :param ro: space between lines
     :return: None
     """
-    ro = 1
+
     dist = 2
     double_bond = [[0 for i in range(4)] for j in [0, 1]]
     dist *= ro
@@ -112,7 +113,7 @@ def draw_bond(num_atom1, num_atom2, type_bond):
     elif type_bond == 2:
         double_line(bond)
     elif type_bond == 3:
-        double_line(bond)
+        double_line(bond, ro=ro)
         canv_gl.create_line(*bond[:4], width=2, tag=str(type_bond))
     else:
         canv_gl.create_line(*bond[:4], width=2, tag=str(type_bond), fill="red")
