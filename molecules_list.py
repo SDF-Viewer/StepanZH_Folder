@@ -46,6 +46,7 @@ class MoleculesList:
             output_set &= set(Molecule.fields_dict.keys())
         return output_set
 
+
 def extract_molecules_list_from_sdf(file, name='Source'):
     """ Преобразует sdf в класс MoleculeList
 

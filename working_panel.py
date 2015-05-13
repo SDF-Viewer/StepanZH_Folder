@@ -16,11 +16,15 @@ class WorkingPanel(Frame):
         self.active_page = 0
         self.pages_sum = 0
         self.showed_fields_list = None
+        # self.ParentWindow = root
         # self.showed_mol_list = None
         # исключение
         if MoleculesList is not None:
-            # self.CurrMolecule = MoleculesList.mol_list[0]
-            self.change_molecules_list(MoleculesList)
+            try:
+                # self.CurrMolecule = MoleculesList.mol_list[0]
+                self.change_molecules_list(MoleculesList)
+            except:
+                self.send_error_message()
         else:
             self.MoleculesList = None
 
@@ -51,19 +55,22 @@ class WorkingPanel(Frame):
 
             page_code: -1 -- next page, -2 -- previous page, 0, <-2 -- ignore, >0 -- goto page
         """
-        if self.MoleculesList is not None:
-            # определяем страницу, на которую нужно переключиться, исключая невозможные варианты
-            if 0 < page_code <= self.pages_sum:
-                self.active_page = page_code
-                self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
-            elif (page_code == -2) and (self.active_page > 1):
-                self.active_page -= 1
-                self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
-            elif (page_code == -1) and (self.active_page < self.pages_sum):
-                self.active_page += 1
-                self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
-            else:
-                return
+        try:
+            if self.MoleculesList is not None:
+                # определяем страницу, на которую нужно переключиться, исключая невозможные варианты
+                if 0 < page_code <= self.pages_sum:
+                    self.active_page = page_code
+                    self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
+                elif (page_code == -2) and (self.active_page > 1):
+                    self.active_page -= 1
+                    self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
+                elif (page_code == -1) and (self.active_page < self.pages_sum):
+                    self.active_page += 1
+                    self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
+                else:
+                    pass
+        except:
+            print('Smth wrong')
 
     def change_status(self, Molecule=None, set_empty_status=False):
         """ Наполняет составляющие содержимым, подгружает новую молекулу
@@ -81,6 +88,8 @@ class WorkingPanel(Frame):
             self.TitleFrame.fill()
 
     def change_molecules_list(self, MoleculesList):
+        """ Вызывается при смене отображаемого на панели MoleculesList
+        """
         import copy
         # self.MoleculesList = MoleculesList
         self.MoleculesList = copy.deepcopy(MoleculesList)
@@ -99,6 +108,11 @@ class WorkingPanel(Frame):
     def update_after_using_editor(self):
         self.change_status(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
         # self.FieldsFrame.fill(Molecule=self.MoleculesList.mol_list[self.active_page - 1])
+
+    def send_error_message(self):
+        import tkinter.messagebox
+        tkinter.messagebox.showerror(title='Сообщение', message='Файл битый')
+
 
 
 class TitleFrame(Frame):
