@@ -63,7 +63,7 @@ class FieldChooser(Toplevel):
     def create_check_list_table(self):
         """ Заполнение TextBox'a строками из CheckButtons, установка Scrollbar'a
         """
-        self.TableScrollbar.config(command=self.CheckListTable.yview)
+        self.TableScrollbar.configure(command=self.CheckListTable.yview)
         self.CheckListTable.configure(yscrollcommand=self.TableScrollbar.set)
 
         for i in range(len(self.union_field_list)):
