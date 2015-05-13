@@ -41,7 +41,7 @@ class WorkingPanel(Frame):
         self.TitleFrame.grid(row=0, column=0, sticky='wen')
         self.CanvasFrame.grid(row=1, column=0)
         self.NavigationFrame.grid(row=2, column=0, sticky='we')
-        self.FieldsFrame.grid(row=3, column=0, sticky='wes')
+        self.FieldsFrame.grid(row=3, column=0)
 
         self.TitleFrame.rowconfigure(0, weight=5)
         self.CanvasFrame.rowconfigure(1, weight=38)

@@ -203,7 +203,7 @@ def create_sp_trees():
     :return: None
     """
     global three_valencies, type_bond_gl, dict_of_aroma_bonds
-    " применяя алгоритм обхода графа в глубину, изменяем тип с ароматической связи на сигма- или пи-связь"
+    " using the algorithm of depth-first traversal, we change the type from aromatic bond to sigma-bond or pi-bond"
     for atom in dict_of_aroma_bonds:
         if atom not in three_valencies:
             type_bond_gl = 0
