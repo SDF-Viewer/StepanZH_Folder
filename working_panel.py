@@ -160,9 +160,6 @@ class CanvasFrame(Frame):
         self.Canvas.bind("<ButtonPress-1>", lambda event: self.Canvas.scan_mark(event.x, event.y))
         self.Canvas.bind("<B1-Motion>", lambda event: self.Canvas.scan_dragto(event.x, event.y, gain=1))
         self.Canvas.bind("<MouseWheel>", self.change_scale)
-        # доделать клавиатурную версию масштабирования, нужно изменить change_scale() или сделать новую
-        # найти новые сочетания клавиш
-        # self.Canvas.bind("<Control-+>", self.change_scale)
 
     def fill(self, Molecule=None, scale=1):
         """ Подгрузка Canvas другой молекулой / масштаббирование
