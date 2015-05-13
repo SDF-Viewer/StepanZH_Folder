@@ -5,14 +5,13 @@ three_valencies = set()
 ERRORS_COUNTER = 0
 
 """
- Модуль для рисования молекулы на холсте
-
- Глобальные для данного модуля переменные:
- mol_gl  - избражаемая молекула
- canv_gl - холст
- dict_of_aroma_bonds - словарь ароматических связей
- type_bond_gl -
- three_valencies - множество атомов с не менее чем тремя валентностями
+Unit for the depicting of molecule on the "canvas"
+Global variable for this module:
+  mol_gl  - variable for molecule, which should be depicted
+ canv_gl – variable for "canvas"
+ dict_of_aroma_bonds – dictionary of aromatic bonds
+ type_bond_gl – type of the bond
+ three_valencies – set of the atoms with no less than three bonds
 """
 
 
@@ -21,24 +20,24 @@ def for_circle(x, y, radius):
 
 
 def into_center(center, scale0):
-    """
+    """ shift a coordinate x to the centre (0) y to the centre(1), multiply size by scale0
 
-    :param center:
-    :param scale0:
-    :return:
+    :param center: list with the coordinates of canvas centre
+    :param scale0:Scale
+    :return: None
     """
     try:
         global mol_gl
-        summa, num, x_y_0 = ([0, 0], [0, 0], [0, 0])
+        sum, num, x_y_0 = ([0, 0], [0, 0], [0, 0])
         optimal_part = 0.85
         max_size, min_size = ([0, 0], [0, 0])
 
         for atom in mol_gl.atom_block:
             for i in 0, 1:
-                summa[i] += atom[i]
+                sum[i] += atom[i]
                 num[i] += 1
         for i in 0, 1:
-            x_y_0[i] = summa[i] / num[i]
+            x_y_0[i] = sum[i] / num[i]
         for num_atom in range(len(mol_gl.atom_block)):
             atom = mol_gl.atom_block[num_atom]
             for i in 0, 1:
@@ -64,14 +63,14 @@ def into_center(center, scale0):
     except:
         send_error_msg()
 
-def double_line(bond, ro=1):
-    """
 
-    :param bond:
-    :param ro:
-    :return:
-    """
+def double_line(bond):
+    """ This function draws a double bond
 
+    :param bond: depicted bond
+    :return: None
+    """
+    ro = 1
     dist = 2
     double_bond = [[0 for i in range(4)] for j in [0, 1]]
     dist *= ro
@@ -85,7 +84,7 @@ def double_line(bond, ro=1):
         else:
             sign_k = k / abs(k)
             k *= k
-            almost_x_y = [dist/math.sqrt(1/k + 1), -dist/math.sqrt(k + 1)*sign_k]
+            almost_x_y = [dist / math.sqrt(1 / k + 1), - dist / math.sqrt(k + 1) * sign_k]
     for bond_i in [0, 1]:
         for coord_i in [0, 1, 2, 3]:
             double_bond[bond_i][coord_i] = (2 * bond_i - 1) * almost_x_y[coord_i % 2] + bond[coord_i]
@@ -94,12 +93,12 @@ def double_line(bond, ro=1):
 
 
 def draw_bond(num_atom1, num_atom2, type_bond):
-    """
+    """ This function draws bond
 
-    :param num_atom1:
-    :param num_atom2:
-    :param type_bond:
-    :return:
+    :param num_atom1: first atom
+    :param num_atom2: second atom
+    :param type_bond: type of the bond
+    :return: None
     """
     ro = 3
     atom1 = mol_gl.atom_block[int(num_atom1) - 1][:2]
@@ -113,19 +112,19 @@ def draw_bond(num_atom1, num_atom2, type_bond):
     elif type_bond == 2:
         double_line(bond)
     elif type_bond == 3:
-        double_line(bond, ro=ro)
+        double_line(bond)
         canv_gl.create_line(*bond[:4], width=2, tag=str(type_bond))
     else:
         canv_gl.create_line(*bond[:4], width=2, tag=str(type_bond), fill="red")
 
 
 def draw_mol(mol, canv0, scale=1):
-    """
+    """ This function depicts a molecule
 
     :param mol: molecule
     :param canv0: canvas
     :param scale: scale
-    :return: draw molecule
+    :return: None
     """
     try:
         " подгружает глобальные переменные и задает значения по умолчанию"
@@ -176,14 +175,13 @@ def draw_mol(mol, canv0, scale=1):
         send_error_msg()
 
 
-
 def into_aroma_dict(start, finish, weight):
-    """
+    """ This function adds bonds to the list of aromatic bonds
 
     :param start: one atom
     :param finish: another atom
     :param weight: their bond's type
-    :return:
+    :return: None
     """
     global dict_of_aroma_bonds
     if start not in dict_of_aroma_bonds:
@@ -197,9 +195,9 @@ def into_aroma_dict(start, finish, weight):
 
 
 def create_sp_trees():
-    """
+    """ This function finds aromatic rings
 
-    :return:
+    :return: None
     """
     global three_valencies, type_bond_gl, dict_of_aroma_bonds
     " применяя алгоритм обхода графа в глубину, изменяем тип с ароматической связи на сигма- или пи-связь"
@@ -207,14 +205,13 @@ def create_sp_trees():
         if atom not in three_valencies:
             type_bond_gl = 0
             dfs_aroma(atom)
-            # type_bond_l = 2 - type_bond_gl % 2
 
 
 def dfs_aroma(atom):
-    """
+    """ This function changes aromatic bond to the single bond or double bond
 
-    :param atom:
-    :return:
+    :param atom: atom
+    :return: None
     """
     global three_valencies, type_bond_gl, dict_of_aroma_bonds
     " применяя алгоритм обхода графа в глубину, изменяем тип с ароматической связи на сигма- или пи-связь"
@@ -229,13 +226,6 @@ def dfs_aroma(atom):
             type_bond_gl += 1
             last_atom = dfs_aroma(near_atom)
     return last_atom
-
-
-def scroll_region_scaling(height, width, scale):
-    global canv_gl
-    height *= scale
-    width *= scale
-    pass
 
 
 def send_error_msg():
