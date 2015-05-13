@@ -1,8 +1,7 @@
 def float_one_dim_list(input_list):
-    """Преобразует элементы однострочного списка в тип float,
-    если возможно.
+    """ Преобразует элементы однострочного списка в тип float, если возможно.
 
-    Возвращает новый список
+        Возвращает новый список
     """
     length = len(input_list)
     output_list = []
@@ -14,12 +13,13 @@ def float_one_dim_list(input_list):
             output_list.append(value)
     return output_list
 
-def float_two_dim_list(input_list):
-    """Преобразует элементы двустрочного списка в тип float,
-    если возможно.
 
-    Возвращает новый список. Работает некорректно, если поданный\
-    список не организован как список списков: '[[],[],[]]'.
+def float_two_dim_list(input_list):
+    """ Преобразует элементы двустрочного списка в тип float,
+        если возможно.
+
+        Возвращает новый список. Работает некорректно, если поданный\
+        список не организован как список списков: '[[],[],[]]'.
     """
     line_count = len(input_list)
     output_list = []
@@ -28,10 +28,11 @@ def float_two_dim_list(input_list):
         output_list.append(float_one_dim_list(input_list[i]))
     return output_list
 
-def get_data_dict_from_string_list(input_string_list):
-    """Конвертирует список строк полей в словарь полей.
 
-    Возвращает словарь. Многострочные поля обрабатываются некорректно
+def get_data_dict_from_string_list(input_string_list):
+    """ Конвертирует список строк полей в словарь полей.
+
+        Возвращает словарь. Многострочные поля обрабатываются некорректно
     """
     output_dict = {}
     
@@ -49,16 +50,19 @@ def get_data_dict_from_string_list(input_string_list):
         output_dict[field] = float_one_dim_list(output_dict[field])
     return output_dict
 
-def prepare_source_list(InputMoleculesList):
-    """Редактирует поданный на вход экземпляр класса MoleculesList в отредактированный MoleculesList
 
-    Подчищает fields_dict от многострочных полей, для однострочных полей оставляет их значения.
+def prepare_source_list(InputMoleculesList):
+    """ Редактирует поданный на вход экземпляр класса MoleculesList в отредактированный MoleculesList
+
+        Подчищает fields_dict от многострочных полей, для однострочных полей оставляет их значения.
     """
 
     NewList = InputMoleculesList
     
-    for molecule in NewList.mol_list:
-        new_fields_dict = molecule.fields_dict
+    for Molecule in NewList.mol_list:
+        if Molecule.header_list[0] == '':
+            Molecule.header_list[0] = 'Название не указано'
+        new_fields_dict = Molecule.fields_dict
         #подготовка нового словаря полей
         keys_for_remove = []
         for field in new_fields_dict:
@@ -69,5 +73,5 @@ def prepare_source_list(InputMoleculesList):
                 new_fields_dict[field] = new_fields_dict[field][0]
         for key in keys_for_remove:
             new_fields_dict.pop(key)
-        molecule.fields_dict = new_fields_dict 
+        Molecule.fields_dict = new_fields_dict
     NewList.name = 'Prepared' + InputMoleculesList.name

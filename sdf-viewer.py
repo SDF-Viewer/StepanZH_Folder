@@ -3,7 +3,7 @@
 
 
 from tkinter import*
-from wpanel import*
+from working_panel import*
 from menu_bar import*
 
 
@@ -26,13 +26,20 @@ class AppWindow(Tk):
 
     def open_file(self, file_name):
         self.open_file_name = file_name
-        file = open(file_name, 'tr')
-        OpenMoleculeslist = extract_molecules_list_from_sdf(file, 'Source')
-        OpenMoleculeslist.source_file_name = file_name
-        file.close()
-
-        self.MoleculesListDB.append(OpenMoleculeslist)
-        self.WorkingFrame.change_molecules_list(OpenMoleculeslist)
+        if file_name != '':
+            file = open(file_name, 'tr')
+            OpenMoleculeslist = extract_molecules_list_from_sdf(file, 'Source')
+            if OpenMoleculeslist is not None:
+                OpenMoleculeslist.source_file_name = file_name
+                self.MoleculesListDB.append(OpenMoleculeslist)
+                self.WorkingFrame.change_molecules_list(OpenMoleculeslist)
+            else:
+                import tkinter.messagebox
+                tkinter.messagebox.showerror(title='Сообщение', message='Похоже, файл некорректен или не содержит '
+                                                                        'молекул. Проверьте простановку "$$$$"')
+            file.close()
+        else:
+            pass
 
     def update_after_using_editor(self):
         self.WorkingFrame.update_after_using_editor()

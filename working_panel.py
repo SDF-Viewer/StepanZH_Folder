@@ -24,9 +24,9 @@ class WorkingPanel(Frame):
         else:
             self.MoleculesList = None
 
-        self.CanvasFrame = CanvasFrame(root=self, bg='lightblue')
-        self.NavigationFrame = NavigationFrame(root=self, bg='red')
-        self.FieldsFrame = FieldsFrame(root=self, bg='lightgreen')
+        self.CanvasFrame = CanvasFrame(root=self)
+        self.NavigationFrame = NavigationFrame(root=self)
+        self.FieldsFrame = FieldsFrame(root=self)
         self.TitleFrame = TitleFrame(root=self)
         self.create_scaffold()
 
@@ -35,7 +35,7 @@ class WorkingPanel(Frame):
         """
 
         self.TitleFrame.grid(row=0, column=0, sticky='wen')
-        self.CanvasFrame.grid(row=1, column=0, sticky='we')
+        self.CanvasFrame.grid(row=1, column=0, sticky='nwes')
         self.NavigationFrame.grid(row=2, column=0, sticky='we')
         self.FieldsFrame.grid(row=3, column=0, sticky='wes')
 
@@ -105,14 +105,15 @@ class TitleFrame(Frame):
     def __init__(self, root, **kwargs):
         Frame.__init__(self, root, **kwargs)
         self.ParentWorkingFrame = root
-        self.TitleLabel = Label(self, anchor='center', bg='red')
+        self.TitleLabel = Label(self, anchor='center')
         self.fill()
 
         self.TitleLabel.grid(row=0, column=0, sticky='we')
 
     def fill(self):
         if self.ParentWorkingFrame.MoleculesList is not None:
-            molecules_list_name = self.ParentWorkingFrame.MoleculesList.name
+            molecules_list_name = self.ParentWorkingFrame.MoleculesList.name # + \
+                                  # self.ParentWorkingFrame.MoleculesList.source_file_name
         else:
             molecules_list_name = 'Файл не выбран'
         self.TitleLabel.configure(text=molecules_list_name)
@@ -178,6 +179,8 @@ class CanvasFrame(Frame):
 
 
 class NavigationFrame(Frame):
+    """ Панель навигации
+    """
     def __init__(self, root, **kwargs):
         Frame.__init__(self, root, **kwargs)
 
@@ -228,6 +231,8 @@ class NavigationFrame(Frame):
         self.MoleculesBox.config(values=molecules_names)
 
     def set_binding(self):
+        """ Простановка обработчиков событий
+        """
         self.NextPageButton.bind("<Button-1>", self.next_page_click)
         self.PreviousPageButton.bind("<Button-1>", self.previous_page_click)
         self.GoToPageButton.bind("<Button-1>", self.go_to_page_click)
@@ -241,6 +246,8 @@ class NavigationFrame(Frame):
         self.ParentWorkingPanel.turn_page(page_code=-2)
 
     def go_to_page_click(self, event):
+        """ Обработчик нажатия на кнопку 'Перейти'. Исключение -- ввод символов.
+        """
         try:
             page = int(self.GoToPageEntry.get())
             if 0 < page <= self.ParentWorkingPanel.pages_sum:
@@ -256,6 +263,8 @@ class NavigationFrame(Frame):
 
 
 class FieldsFrame(Frame):
+    """ Таблица с информаций о содержании полей молекулы
+    """
     def __init__(self, root, **kwargs):
         Frame.__init__(self, root, **kwargs)
         self.parent_working_panel = root

@@ -1,3 +1,6 @@
+""" Полёвщик
+"""
+
 from tkinter import *
 
 
@@ -6,6 +9,7 @@ class FieldChooser(Toplevel):
         self.ParentWindow = root
         if self.ParentWindow.WorkingFrame.MoleculesList is not None:
             Toplevel.__init__(self, master=root, **kwargs)
+            # print(self[])
             self.ParentWindow = root
             self.title("Меню выбора полей")
             self.resizable(0, 0)
@@ -33,13 +37,14 @@ class FieldChooser(Toplevel):
             self.create_binding()
 
             self.CheckListTable.config(state=DISABLED)
+            self.grab_set()
         else:
             import tkinter.messagebox
             tkinter.messagebox.showerror(title='Сообщение', message='Ни один файл не был открыт')
 
     def create_scaffold(self):
-        self.SetCheckForAllButton.grid(row=0, column=0)
-        self.SelectNoneCheckButton.grid(row=0, column=1)
+        self.SetCheckForAllButton.grid(row=0, column=0, sticky='e')
+        self.SelectNoneCheckButton.grid(row=0, column=1, sticky='w')
         self.CheckListTable.grid(row=1, column=0, columnspan=3)
         self.TableScrollbar.grid(row=1, column=3, sticky='ns')
         self.ApplyButton.grid(row=2, column=0)
@@ -57,6 +62,8 @@ class FieldChooser(Toplevel):
         self.create_check_list_table()
 
     def create_check_list_table(self):
+        """ Заполнение TextBox'a строками из CheckButtons, установка Scrollbar'a
+        """
         self.TableScrollbar.config(command=self.CheckListTable.yview)
         self.CheckListTable.configure(yscrollcommand=self.TableScrollbar.set)
 
@@ -66,7 +73,7 @@ class FieldChooser(Toplevel):
 
     def append_row_to_check_list_frame(self, field_name, index):
         curr_var = self.flags_list[index]
-        ChButt = Checkbutton(self.CheckListTable, text=field_name, onvalue=1, offvalue=0, variable=curr_var)
+        ChButt = Checkbutton(self.CheckListTable, bg='lightgrey', text=field_name, onvalue=1, offvalue=0, variable=curr_var)
         self.CheckListTable.window_create("end", window=ChButt)
         self.CheckListTable.insert("end", "\n")
 
