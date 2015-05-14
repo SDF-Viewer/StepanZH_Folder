@@ -15,7 +15,7 @@ class GMenu(Menu):
 
         self.add_command(label='Открыть файл', command=self.open_file)
         self.add_command(label='Выбор полей', command=self.call_field_chooser)
-        self.add_command(label='Спрака', command=self.call_manual)
+        self.add_command(label='Справка', command=self.call_manual)
         # self.add_command(label='Фильтр молекул', command=self.call_mol_filter)
         # self.add_command(label='Переоткрыть исходник', command=self.call_reopen)
 
