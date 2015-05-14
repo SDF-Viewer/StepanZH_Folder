@@ -26,6 +26,8 @@ def into_center(center, scale0):
     :param scale0:Scale
     :return: None
     """
+    global ERRORS_COUNTER
+    ERRORS_COUNTER = 0
     try:
         global mol_gl
         summ, num, x_y_0 = ([0, 0], [0, 0], [0, 0])

@@ -10,7 +10,7 @@ class Manual(Toplevel):
         self.file_as_string = file.read()
         file.close()
 
-        self.TextBox = Text(self, width=100, height=35)
+        self.TextBox = Text(self, width=100, height=35, wrap=WORD)
         self.TextBox.grid(row=0, column=0)
         self.TextBox.insert('end', self.file_as_string)
         self.TextBox.config(state=DISABLED)

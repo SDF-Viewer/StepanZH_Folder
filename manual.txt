@@ -1,59 +1,52 @@
-﻿РГН
+﻿Руководство пользователя
 
-вф
-ыв
-фвввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввввв
-ыф
-в
-в
-фв
+Общее описание программы
+Данная программа реализует полноценное построение 2D-структуры молекул,  считывая данные из  выбранного SDF-файла. Возможности программы позволяют:
+1.	Выборочное считывание данных из файла, путем фильтрации предоставленного списка молекул, по задаваемым критериям
+2.	Работу с полями данных, отображаемых в программе (как то: сокрытие определенных полей свойств и отображение необходимых)
+3.	Переход по списку для сравнения со всеми имеющимися в файле молекулами
+4.	Масштабирование построенного изображения.
+Рабочая панель находится в правом, верхнем углу экрана.  На ней располагаются кнопки: «Файл», «Выбор полей», «Справка»
 
-а
-мя
+Функции кнопок:
+1.  Кнопка «Файл»
+При нажатии на кнопку «Файл», в открывшемся выпадающем окне появится команда открыть. При нажатии на эту команду, в открывшемся окне проводника, вы сможете открыть выбранный SDF-файл.
+2.  Кнопка «Выбор полей»
+Кнопка «Выбор полей» позволяет вам работать с полями данных, отображая или скрывая соответственно необходимые поля.
+3.  Кнопка «Список молекул»
+Кнопка «Список молекул» позволяет переходить пользователю внутри списка молекул, поданного на вход программы.
+4.  Кнопки перехода по списку молекул  < > (расположены под холстом)  позволяют переключаться внутри списка молекул, переключая построенные изображения и свойства для различных молекул
+5.  Масштабирование изображения  выполняется с помощью колеса прокрутки мыши.
+6.  Горизонтальные и вертикальные scroll-bar’ы (полосы прокрутки) позволяют перемещаться по построенному изображению в горизонтальном и вертикальном направлении соответственно.
+7.  Кнопка «Справка»
+При нажатии на кнопку справка вы сможете получить справку о конкретных элементах программы.
 
 
-1
-221
-2
-13
-1
 
-3333333№;;
-;
-;
-;
-;
-%
-5d
-d
-d
-d
-d
-d
-d
-d
-d
-dd
-d
-d
-d
 
-d
-d
-dd
 
-d
-d
-d
-d
-d
-d
-dd
-d
-d
-d
 
-dd
-d
 
-d
+User's guide.
+
+General description of the program
+This program provides full 2D – structure construction of molecule, reading out data from the selected SDF file. Resources of the program allow:
+1.	Selective data readout from file, using a filtration of the inputted molecules list by the set of criteria.
+2.	Work with data fields, displayed in the program (for example: concealment of specific fields of properties and demonstration of necessary properties)
+3.	Jump to the necessary image, according to the list of molecules, for easy comparison with all molecules which are available in the file.
+4.	Zooming of the constructed image..
+Operating panel is in the left top corner of the screen. There are several buttons fixed on it: “File”, “Settings’, “Fields selection”, “Help”.
+
+Functions of buttons
+1.  “File” button
+ If you press the “File” button, a command “to open the file” will appear in the pulldown. If you press on this command, the window of the conductor will spring up and you will be able to open the chosen SDF file.
+2.  “Fields selection”
+The button “Fields selection” allows you to work with data fields, displaying or hiding necessary fields.
+3.  “List of molecules” button
+“List of molecules” button allows to the user to jump to the necessary image, according to the list of molecules. This function was made for easy comparison with all molecules which are available in the file.
+4.  Transition buttons < >  (are located under the canvas)
+If you press “Transition” button you will be able to move inside of the molecules list and to switch between the constructed images and properties for various molecules.
+5.  Zooming of the image You can zoom an image of the displayed molecule using a scroll wheel of a mouse.
+6.  Horizontal and vertical scroll-bars of the canvas allow you to move in the horizontal and vertical direction of the displayed image.
+7.  “Help” button
+ If you press the “Help” button, you will be able to receive the information about concrete elements of the program.
