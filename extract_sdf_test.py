@@ -16,14 +16,18 @@ for row in MolList.mol_list[0].header_list:
     print('FILE:\t', file_as_string[index])
     index += 1
     print('LIST:\t', row)
-# COUNTS LINE
+
+print('---------COUNTS LINE----------')
+
 print('FILE:\t', file_as_string[index])
 index += 1
 print('LIST:\t', end='  ')
 for cell in MolList.mol_list[0].counts_line:
     print(cell, end='  ')
 print()
-# ATOM BLOCK
+
+print('---------ATOM BLOCK----------')
+
 for row in MolList.mol_list[0].atom_block:
     print('FILE:\t', file_as_string[index])
     index += 1
@@ -31,7 +35,9 @@ for row in MolList.mol_list[0].atom_block:
     for cell in row:
         print(cell, end='  ')
     print()
-# BOND BLOCK
+
+print('---------BOND BLOCK----------')
+
 for row in MolList.mol_list[0].bond_block:
     print('FILE:\t', file_as_string[index])
     index += 1

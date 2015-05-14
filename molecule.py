@@ -37,6 +37,7 @@ class Molecule:
         field_order_list.sort()
         return field_order_list
 
+
 def extract_molecule_by_string(input_string):
     """Преобразует кусок sdf в класс Molecule
 
